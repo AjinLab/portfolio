@@ -14,7 +14,7 @@ const fadeUp = (delay: number) => ({
   transition: { duration: 0.5, delay, ease: 'easeOut' as const },
 })
 
-const stackItems = ['TypeScript', 'React', 'Next.js', 'Python', 'PyTorch', 'Linux']
+const stackItems = ['Python', 'Linux']
 
 function GitHubIcon({ className }: { className?: string }) {
   return (
@@ -183,8 +183,8 @@ export function Hero() {
             <button
               onClick={handleHireClick}
               className={`shrink-0 text-[13px] px-4 py-1.5 rounded-lg border transition-all cursor-pointer ${isBlocked
-                  ? 'border-border-subtle text-text-faint opacity-60 hover:opacity-80 hover:border-border-hover'
-                  : 'border-border-subtle text-text-muted hover:border-border-hover hover:text-text-primary hover:bg-white/[0.03]'
+                ? 'border-border-subtle text-text-faint opacity-60 hover:opacity-80 hover:border-border-hover'
+                : 'border-border-subtle text-text-muted hover:border-border-hover hover:text-text-primary hover:bg-white/[0.03]'
                 }`}
             >
               {isBlocked ? 'Not Available' : 'Hire me'}
