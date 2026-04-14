@@ -4,6 +4,7 @@ import { Inter, Fira_Code } from 'next/font/google'
 import { NavbarWrapper } from '@/components/layout/NavbarWrapper'
 import { FloatingNav } from '@/components/layout/FloatingNav'
 import { Footer } from '@/components/layout/Footer'
+import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 const inter = Inter({
@@ -39,6 +40,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
         <main>{children}</main>
         <FloatingNav />
         <Footer />
+        <Analytics />
       </body>
     </html>
   )
