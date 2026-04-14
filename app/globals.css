@@ -29,7 +29,7 @@ html {
 
 /* Offset anchor scroll for the fixed navbar */
 section[id] {
-  scroll-margin-top: 4rem;
+  scroll-margin-top: 5rem;
 }
 
 /* Custom scrollbar */
@@ -44,6 +44,11 @@ section[id] {
 ::-webkit-scrollbar-thumb {
   background: #464f58;
   border-radius: 2px;
+  transition: background 0.2s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6e7681;
 }
 
 /* Select dropdown options */
@@ -56,4 +61,258 @@ select option {
 ::selection {
   background: rgba(61, 214, 200, 0.25);
   color: #e6edf3;
+}
+
+/* ─── Contact Section Styles ───────────────────────────────────────────────── */
+
+/* Ambient background orbs */
+.ambient-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(120px);
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.35;
+}
+
+/* 3D Card flip */
+.card-shell {
+  perspective: 1200px;
+}
+
+.card-height-wrap {
+  transition: height 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: visible;
+}
+
+.card-flipper {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1);
+  will-change: transform;
+}
+
+.card-flipper.flipped {
+  transform: rotateY(180deg);
+}
+
+.card-face {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.card-back {
+  transform: rotateY(180deg);
+}
+
+/* Traffic-light buttons */
+.tl {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  position: relative;
+  border: none;
+  padding: 0;
+  flex-shrink: 0;
+}
+
+.tl:hover {
+  transform: scale(1.3);
+}
+
+.tl:focus-visible {
+  outline: 2px solid #2dd4bf;
+  outline-offset: 2px;
+}
+
+.tl-close {
+  background: rgba(248, 113, 113, 0.3);
+}
+.tl-close:hover {
+  background: #f87171;
+  box-shadow: 0 0 10px rgba(248, 113, 113, 0.5);
+}
+
+.tl-clear {
+  background: rgba(250, 204, 21, 0.3);
+}
+.tl-clear:hover {
+  background: #facc15;
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+}
+
+.tl-send {
+  background: rgba(74, 222, 128, 0.3);
+}
+.tl-send:hover {
+  background: #4ade80;
+  box-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
+}
+
+/* Tooltip via data-tip attribute */
+[data-tip] {
+  position: relative;
+}
+[data-tip]:hover::after {
+  content: attr(data-tip);
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 8px;
+  border-radius: 5px;
+  font-family: monospace;
+  font-size: 10px;
+  white-space: nowrap;
+  pointer-events: none;
+  background: rgba(0, 0, 0, 0.92);
+  color: #e4e4e7;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 50;
+}
+
+/* Card surface hover glow */
+.bar-surface {
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+.bar-surface:hover {
+  border-color: rgba(45, 212, 191, 0.22);
+  box-shadow: 0 0 40px rgba(45, 212, 191, 0.06);
+}
+
+/* Shimmer sweep */
+.shimmer-wrap {
+  position: relative;
+  overflow: hidden;
+}
+.shimmer-wrap::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(45, 212, 191, 0.03),
+    transparent
+  );
+  animation: shimmerSweep 5s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shimmerSweep {
+  0%,
+  100% {
+    left: -100%;
+  }
+  50% {
+    left: 140%;
+  }
+}
+
+/* Expand trigger button */
+.expand-trigger {
+  transition: all 0.25s ease;
+}
+.expand-trigger:hover {
+  background: rgba(45, 212, 191, 0.12);
+  border-color: rgba(45, 212, 191, 0.3);
+  color: #2dd4bf;
+}
+
+/* Dot pulse animation */
+@keyframes dotPulse {
+  0%,
+  100% {
+    opacity: 0.5;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.15);
+  }
+}
+.dot-pulse {
+  animation: dotPulse 2.5s ease-in-out infinite;
+}
+
+/* Icon pulse animation */
+@keyframes iconPulse {
+  0%,
+  100% {
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+.icon-pulse {
+  animation: iconPulse 3s ease-in-out infinite;
+}
+
+/* Spinner */
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+
+/* Fade up animation */
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.animate-fade-up {
+  animation: fadeUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+/* Toast enter animation */
+@keyframes toastIn {
+  from {
+    transform: translateX(120%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+.animate-toast-enter {
+  animation: toastIn 0.35s ease forwards;
+}
+
+/* Badge pop animation */
+@keyframes badgePop {
+  0% {
+    transform: scale(0.5);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+.badge-pop {
+  animation: badgePop 0.4s ease forwards;
 }

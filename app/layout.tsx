@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import type { ReactNode } from 'react'
 import { Inter, Fira_Code } from 'next/font/google'
-import { Navbar } from '@/components/layout/Navbar'
+import { NavbarWrapper } from '@/components/layout/NavbarWrapper'
 import { FloatingNav } from '@/components/layout/FloatingNav'
 import { Footer } from '@/components/layout/Footer'
 import './globals.css'
@@ -35,7 +35,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" className={`${inter.variable} ${firaCode.variable}`}>
       <body className="bg-bg-primary text-text-primary font-sans antialiased">
-        <Navbar />
+        <NavbarWrapper />
         <main>{children}</main>
         <FloatingNav />
         <Footer />

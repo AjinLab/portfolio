@@ -6,7 +6,8 @@ import { motion } from 'framer-motion'
 import { Mail } from 'lucide-react'
 import { HireModal } from '@/components/ui/HireModal'
 import { StatusBlockedModal } from '@/components/ui/StatusBlockedModal'
-import { SITE_STATUS, statusConfig } from '@/lib/site-status'
+import { statusConfig } from '@/lib/site-status'
+import type { StatusType } from '@/lib/site-status'
 
 const fadeUp = (delay: number) => ({
   initial: { opacity: 0, y: 20 },
@@ -55,11 +56,11 @@ const socials = [
   { Icon: InstagramIcon, href: 'https://instagram.com/ephoreee', label: 'Instagram' },
 ]
 
-export function Hero() {
+export function Hero({ siteStatus }: { siteStatus: StatusType }) {
   const [hireOpen, setHireOpen] = useState(false)
   const [blockedOpen, setBlockedOpen] = useState(false)
 
-  const current = statusConfig[SITE_STATUS]
+  const current = statusConfig[siteStatus]
   const isBlocked = current.hireBlocked
 
   function handleHireClick() {
@@ -119,7 +120,7 @@ export function Hero() {
             href="https://github.com/ajinlab/AI-Journey-2026"
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 bg-teal text-bg-primary font-semibold text-sm px-5 py-2.5 rounded-lg hover:opacity-85 transition-opacity"
+            className="inline-flex items-center gap-2 bg-teal text-bg-primary font-semibold text-sm px-5 py-2.5 rounded-lg hover:brightness-110 hover:shadow-lg hover:shadow-teal/20 active:scale-[0.97] transition-all duration-200"
           >
             AI Journey Repo
             <GitHubIcon className="w-4 h-4" />
@@ -197,7 +198,7 @@ export function Hero() {
       <HireModal isOpen={hireOpen} onClose={() => setHireOpen(false)} />
 
       {/* Blocked modal — only when unavailable/under-construction */}
-      <StatusBlockedModal isOpen={blockedOpen} onClose={() => setBlockedOpen(false)} />
+      <StatusBlockedModal isOpen={blockedOpen} onClose={() => setBlockedOpen(false)} siteStatus={siteStatus} />
     </>
   )
 }

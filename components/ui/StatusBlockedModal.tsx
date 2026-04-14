@@ -3,42 +3,49 @@
 
 import { motion, AnimatePresence } from 'framer-motion'
 import { AlertTriangle, X } from 'lucide-react'
-import { statusConfig, SITE_STATUS } from '@/lib/site-status'
+import { statusConfig } from '@/lib/site-status'
+import type { StatusType } from '@/lib/site-status'
 
 interface StatusBlockedModalProps {
     isOpen: boolean
     onClose: () => void
+    siteStatus: StatusType
 }
 
-export function StatusBlockedModal({ isOpen, onClose }: StatusBlockedModalProps) {
-    const current = statusConfig[SITE_STATUS]
+export function StatusBlockedModal({ isOpen, onClose, siteStatus }: StatusBlockedModalProps) {
+    const current = statusConfig[siteStatus]
 
     return (
         <AnimatePresence>
             {isOpen && (
-                <>
+                <motion.div
+                    className="fixed inset-0 z-[100] flex items-center justify-center p-4"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    transition={{ duration: 0.2 }}
+                >
                     {/* Backdrop */}
                     <motion.div
+                        className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+                        onClick={onClose}
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
-                        transition={{ duration: 0.2 }}
-                        onClick={onClose}
-                        className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm"
                     />
 
                     {/* Modal */}
-                    <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95, y: 10 }}
-                            animate={{ opacity: 1, scale: 1, y: 0 }}
-                            exit={{ opacity: 0, scale: 0.95, y: 10 }}
-                            transition={{ duration: 0.2, ease: 'easeOut' }}
-                            className="w-full max-w-md bg-bg-card border border-border-subtle rounded-2xl shadow-2xl overflow-hidden"
-                        >
+                    <motion.div
+                        className="relative w-full max-w-md bg-bg-card border border-border-subtle rounded-2xl shadow-2xl overflow-hidden"
+                        initial={{ opacity: 0, scale: 0.95, y: 10 }}
+                        animate={{ opacity: 1, scale: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95, y: 10 }}
+                        transition={{ duration: 0.2, ease: 'easeOut' }}
+                        onClick={(e) => e.stopPropagation()}
+                    >
                             {/* Top accent bar colored by status */}
                             <div
-                                className={`h-1 w-full ${SITE_STATUS === 'unavailable'
+                                className={`h-1 w-full ${siteStatus === 'unavailable'
                                     ? 'bg-red-400'
                                     : 'bg-yellow-400'
                                     }`}
@@ -50,13 +57,13 @@ export function StatusBlockedModal({ isOpen, onClose }: StatusBlockedModalProps)
                                     <div className="flex items-center gap-3">
                                         {/* Warning icon */}
                                         <div
-                                            className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${SITE_STATUS === 'unavailable'
+                                            className={`w-10 h-10 rounded-full flex items-center justify-center shrink-0 ${siteStatus === 'unavailable'
                                                 ? 'bg-red-400/10'
                                                 : 'bg-yellow-400/10'
                                                 }`}
                                         >
                                             <AlertTriangle
-                                                className={`w-5 h-5 ${SITE_STATUS === 'unavailable'
+                                                className={`w-5 h-5 ${siteStatus === 'unavailable'
                                                     ? 'text-red-400'
                                                     : 'text-yellow-400'
                                                     }`}
@@ -96,19 +103,19 @@ export function StatusBlockedModal({ isOpen, onClose }: StatusBlockedModalProps)
 
                                 {/* Warning box */}
                                 <div
-                                    className={`flex items-start gap-2.5 mt-4 p-3 rounded-lg border ${SITE_STATUS === 'unavailable'
+                                    className={`flex items-start gap-2.5 mt-4 p-3 rounded-lg border ${siteStatus === 'unavailable'
                                         ? 'bg-red-400/5 border-red-400/20'
                                         : 'bg-yellow-400/5 border-yellow-400/20'
                                         }`}
                                 >
                                     <AlertTriangle
-                                        className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${SITE_STATUS === 'unavailable'
+                                        className={`w-3.5 h-3.5 mt-0.5 shrink-0 ${siteStatus === 'unavailable'
                                             ? 'text-red-400'
                                             : 'text-yellow-400'
                                             }`}
                                     />
                                     <p
-                                        className={`text-[11px] leading-relaxed ${SITE_STATUS === 'unavailable'
+                                        className={`text-[11px] leading-relaxed ${siteStatus === 'unavailable'
                                             ? 'text-red-400/80'
                                             : 'text-yellow-400/80'
                                             }`}
@@ -128,8 +135,7 @@ export function StatusBlockedModal({ isOpen, onClose }: StatusBlockedModalProps)
                                 </div>
                             </div>
                         </motion.div>
-                    </div>
-                </>
+                </motion.div>
             )}
         </AnimatePresence>
     )

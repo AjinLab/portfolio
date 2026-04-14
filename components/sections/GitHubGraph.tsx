@@ -3,8 +3,8 @@
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { RevealOnScroll } from '@/components/ui/RevealOnScroll'
 import dynamic from 'next/dynamic'
-import { useState } from 'react'
-import type { ComponentProps } from 'react'
+import { Component, useState } from 'react'
+import type { ComponentProps, ReactNode, ErrorInfo } from 'react'
 import type { GitHubCalendar as GitHubCalendarType } from 'react-github-calendar'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
@@ -39,51 +39,74 @@ function CalendarError({ onRetry }: { onRetry: () => void }) {
   )
 }
 
+// ─── Error Boundary ───────────────────────────────────────────────────────────
+/**
+ * React Error Boundaries are the ONLY way to catch errors thrown during
+ * rendering. The GitHubCalendar component uses `throwOnError`, which means
+ * a failed API call throws during render — without this boundary, the
+ * entire page would crash to a blank screen.
+ */
+interface ErrorBoundaryProps {
+  children: ReactNode
+  fallback: ReactNode
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean
+}
+
+class CalendarErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { hasError: false }
+
+  static getDerivedStateFromError(): ErrorBoundaryState {
+    return { hasError: true }
+  }
+
+  componentDidCatch(error: Error, info: ErrorInfo) {
+    console.error('GitHub Calendar error:', error, info)
+  }
+
+  render() {
+    if (this.state.hasError) return this.props.fallback
+    return this.props.children
+  }
+}
+
 // ─── Dynamic Import ───────────────────────────────────────────────────────────
-// Import using the named export directly — no .default access needed.
-// Cast through ComponentProps to preserve the real prop types for TypeScript.
 type CalendarProps = ComponentProps<typeof GitHubCalendarType>
 
 const GitHubCalendar = dynamic<CalendarProps>(
   () => import('react-github-calendar').then((mod) => mod.GitHubCalendar),
   {
     ssr: false,
-    loading: CalendarSkeleton,
+    loading: () => <CalendarSkeleton />,
   }
 )
 
 // ─── Calendar Wrapper with Error Handling ─────────────────────────────────────
 function CalendarWrapper() {
-  const [hasError, setHasError] = useState(false)
   const [retryKey, setRetryKey] = useState(0)
 
-  const handleRetry = () => {
-    setHasError(false)
-    setRetryKey((prev) => prev + 1)
-  }
-
-  if (hasError) {
-    return <CalendarError onRetry={handleRetry} />
-  }
-
   return (
-    /*
-     * min-w wrapper ensures the calendar scrolls horizontally on small
-     * screens rather than being squished — the outer card has overflow-x-auto.
-     */
-    <div className="min-w-[600px]">
-      <GitHubCalendar
-        key={retryKey}
-        username={GITHUB_USERNAME}
-        colorScheme="dark"
-        theme={CALENDAR_THEME}
-        fontSize={11}
-        blockSize={9}
-        blockMargin={2}
-        blockRadius={2}
-        throwOnError
-      />
-    </div>
+    <CalendarErrorBoundary
+      key={retryKey}
+      fallback={
+        <CalendarError onRetry={() => setRetryKey((k) => k + 1)} />
+      }
+    >
+      <div className="min-w-[600px]">
+        <GitHubCalendar
+          username={GITHUB_USERNAME}
+          colorScheme="dark"
+          theme={CALENDAR_THEME}
+          fontSize={11}
+          blockSize={9}
+          blockMargin={2}
+          blockRadius={2}
+          throwOnError
+        />
+      </div>
+    </CalendarErrorBoundary>
   )
 }
 

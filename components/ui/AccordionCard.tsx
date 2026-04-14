@@ -20,10 +20,19 @@ const iconBgMap: Record<string, string> = {
 export function AccordionCard({ item, isOpen, onToggle }: AccordionCardProps) {
   return (
     <div
-      className={`bg-bg-card border rounded-xl overflow-hidden transition-colors cursor-pointer ${
+      className={`bg-bg-card border rounded-xl overflow-hidden transition-all duration-200 cursor-pointer focus-visible:ring-2 focus-visible:ring-teal/50 focus-visible:outline-none ${
         isOpen ? 'border-border-hover' : 'border-border-subtle hover:border-border-hover'
       }`}
       onClick={onToggle}
+      tabIndex={0}
+      role="button"
+      aria-expanded={isOpen}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault()
+          onToggle()
+        }
+      }}
     >
       {/* Header */}
       <div className="flex items-start gap-3 p-4">
@@ -72,7 +81,7 @@ export function AccordionCard({ item, isOpen, onToggle }: AccordionCardProps) {
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            transition={{ duration: 0.35, ease: [0.4, 0, 0.2, 1] }}
             className="overflow-hidden"
           >
             <div className="px-4 pb-4 pt-0">

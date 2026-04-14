@@ -2,7 +2,8 @@
 
 import { motion } from 'framer-motion'
 import Link from 'next/link'
-import { SITE_STATUS, statusConfig } from '@/lib/site-status'
+import { statusConfig } from '@/lib/site-status'
+import type { StatusType } from '@/lib/site-status'
 
 const navLinks = [
   { label: 'Timeline', href: '#education' },
@@ -11,8 +12,8 @@ const navLinks = [
   { label: 'Contact', href: '#contact' },
 ]
 
-export function Navbar() {
-  const current = statusConfig[SITE_STATUS]
+export function Navbar({ siteStatus }: { siteStatus: StatusType }) {
+  const current = statusConfig[siteStatus]
 
   return (
     <motion.header

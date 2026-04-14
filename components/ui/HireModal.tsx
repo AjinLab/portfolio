@@ -280,7 +280,7 @@ export function HireModal({ isOpen, onClose }: HireModalProps) {
                   <button
                     type="submit"
                     disabled={status === 'sending'}
-                    className="flex-1 bg-teal text-bg-primary font-semibold text-sm py-2.5 rounded-lg hover:opacity-85 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+                    className="flex-1 bg-teal text-bg-primary font-semibold text-sm py-2.5 rounded-lg hover:brightness-110 hover:shadow-lg hover:shadow-teal/20 active:scale-[0.97] transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                   >
                     {status === 'sending' ? (
                       <>

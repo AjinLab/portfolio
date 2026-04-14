@@ -1,6 +1,6 @@
 'use client'
 
-import { projects } from '@/data/projects'
+import type { Project } from '@/data/projects'
 import { SectionLabel } from '@/components/ui/SectionLabel'
 import { RevealOnScroll } from '@/components/ui/RevealOnScroll'
 import { ExternalLink } from 'lucide-react'
@@ -68,8 +68,8 @@ function getPhaseStatus(overallProgress: number, range: [number, number]): Phase
 
 // ─── Journey Card ─────────────────────────────────────────────────────────────
 
-const JourneyCard = memo(function JourneyCard() {
-  const journey = useMemo(() => projects.find((p) => p.isJourney), [])
+const JourneyCard = memo(function JourneyCard({ projects }: { projects: Project[] }) {
+  const journey = useMemo(() => projects.find((p) => p.isJourney), [projects])
   if (!journey) return null
 
   // Use githubUrl from data — fallback to empty string (link hidden if missing)
@@ -210,11 +210,11 @@ const ProjectRow = memo(function ProjectRow({
   project,
   index,
 }: {
-  project: (typeof projects)[number]
+  project: Project
   index: number
 }) {
   const status = statusConfig[project.status]
-  const href = (project.url ?? project.githubUrl ?? '').replace(/^#$/, '')
+  const href = project.url ?? project.githubUrl ?? ''
   const isLinked = Boolean(href)
 
   const inner = (
@@ -303,10 +303,10 @@ const ProjectRow = memo(function ProjectRow({
 
 // ─── Section ──────────────────────────────────────────────────────────────────
 
-export function Projects() {
+export function Projects({ projects }: { projects: Project[] }) {
   const nonJourneyProjects = useMemo(
     () => projects.filter((p) => !p.isJourney),
-    []
+    [projects]
   )
 
   return (
@@ -322,7 +322,7 @@ export function Projects() {
       </RevealOnScroll>
 
       {/* Featured Journey Card */}
-      <JourneyCard />
+      <JourneyCard projects={projects} />
 
       {/* Project List */}
       <div>
