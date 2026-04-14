@@ -287,15 +287,15 @@ export function Contact() {
                   {/* Form */}
                   <form id="contact-form" onSubmit={handleSubmit} className="px-5" noValidate>
                     {/* To */}
-                    <div className="flex items-center gap-3 border-b border-border-subtle py-2.5">
+                    <div className="flex items-center gap-2 border-b border-border-subtle py-3">
                       <span className="font-mono text-[11px] font-medium uppercase tracking-wider text-text-muted w-14 shrink-0">
                         To
                       </span>
-                      <span className="text-sm text-teal">ajin.connect@gmail.com</span>
+                      <span className="text-sm text-teal px-2">ajin.connect@gmail.com</span>
                     </div>
 
                     {/* From */}
-                    <div className="flex items-center gap-2 border-b border-border-subtle py-2.5">
+                    <div className="flex items-center gap-2 border-b border-border-subtle py-3">
                       <span className="font-mono text-[11px] font-medium uppercase tracking-wider text-text-muted w-14 shrink-0">
                         From
                       </span>
@@ -307,10 +307,10 @@ export function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, name: e.target.value })
                         }
-                        className="bg-transparent text-sm text-text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-teal/50 rounded w-24 sm:w-36 transition-colors"
+                        className="bg-transparent text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none focus:ring-1 focus:ring-teal/50 focus:bg-white/5 rounded-md px-2 py-1.5 w-24 sm:w-32 transition-all"
                         style={{ caretColor: '#3dd6c8' }}
                       />
-                      <span className="text-xs opacity-20 text-text-muted">&lt;</span>
+                      <span className="text-xs opacity-40 text-text-muted font-mono">&lt;</span>
                       <input
                         type="email"
                         placeholder="you@email.com *"
@@ -319,14 +319,14 @@ export function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, email: e.target.value })
                         }
-                        className="bg-transparent text-sm text-text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-teal/50 rounded flex-1 min-w-0 transition-colors"
+                        className="bg-transparent text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none focus:ring-1 focus:ring-teal/50 focus:bg-white/5 rounded-md px-2 py-1.5 flex-1 min-w-0 transition-all"
                         style={{ caretColor: '#3dd6c8' }}
                       />
-                      <span className="text-xs opacity-20 text-text-muted">&gt;</span>
+                      <span className="text-xs opacity-40 text-text-muted font-mono">&gt;</span>
                     </div>
 
                     {/* Subject */}
-                    <div className="flex items-center gap-3 border-b border-border-subtle py-2.5">
+                    <div className="flex items-center gap-2 border-b border-border-subtle py-3">
                       <span className="font-mono text-[11px] font-medium uppercase tracking-wider text-text-muted w-14 shrink-0">
                         Subject
                       </span>
@@ -337,7 +337,7 @@ export function Contact() {
                         onChange={(e) =>
                           setFormData({ ...formData, subject: e.target.value })
                         }
-                        className="bg-transparent text-sm text-text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-teal/50 rounded flex-1 transition-colors"
+                        className="bg-transparent text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none focus:ring-1 focus:ring-teal/50 focus:bg-white/5 rounded-md px-2 py-1.5 flex-1 transition-all"
                         style={{ caretColor: '#3dd6c8' }}
                       />
                     </div>
@@ -346,12 +346,12 @@ export function Contact() {
                     <textarea
                       placeholder="Write your message..."
                       required
-                      rows={6}
+                      rows={5}
                       value={formData.message}
                       onChange={(e) =>
                         setFormData({ ...formData, message: e.target.value })
                       }
-                      className="bg-transparent text-sm text-text-primary focus:outline-none focus-visible:ring-1 focus-visible:ring-teal/50 rounded resize-none w-full py-3 leading-relaxed transition-colors"
+                      className="bg-transparent text-sm text-text-primary placeholder:text-text-muted/50 focus:outline-none focus:ring-1 focus:ring-teal/50 focus:bg-white/5 rounded-md px-3 py-3 mt-4 resize-none w-full leading-relaxed transition-all"
                       style={{ caretColor: '#3dd6c8' }}
                     />
 
