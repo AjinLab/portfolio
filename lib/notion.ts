@@ -56,8 +56,8 @@ export async function getProjects(): Promise<Project[]> {
   }
 
   try {
-    const response = await notion.dataSources.query({
-      data_source_id: PROJECTS_DB_ID,
+    const response = await notion.databases.query({
+      database_id: PROJECTS_DB_ID,
       filter: {
         property: 'visible',
         checkbox: { equals: true },
@@ -125,8 +125,8 @@ export async function getSiteStatus(): Promise<StatusType> {
   }
 
   try {
-    const response = await notion.dataSources.query({
-      data_source_id: STATUS_PAGE_ID,
+    const response = await notion.databases.query({
+      database_id: STATUS_PAGE_ID,
       page_size: 1,
     })
 
