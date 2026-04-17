@@ -95,9 +95,21 @@ export async function getProjects(): Promise<Project[]> {
         status,
       }
     })
-  } catch (error) {
-    console.error('[Notion] Failed to fetch projects, falling back to static data:', error)
-    return staticProjects
+  } catch (error: any) {
+    console.error('[Notion] Failed to fetch projects:', error)
+    return [
+      {
+        id: 'error',
+        name: 'Notion Database Error',
+        description: `API Error: ${error.message || String(error)}. Make sure you are using the Data Source ID (not Database ID from URL), that the integration is added to the database via 'Connect to', and that columns like 'visible' exactly match.`,
+        tags: ['Error'],
+        year: new Date().getFullYear().toString(),
+        url: null,
+        githubUrl: null,
+        isJourney: false,
+        status: 'Upcoming'
+      }
+    ]
   }
 }
 
@@ -145,8 +157,8 @@ export async function getSiteStatus(): Promise<StatusType> {
     const notionValue: string = props.status?.select?.name ?? ''
 
     return STATUS_MAP[notionValue] ?? SITE_STATUS
-  } catch (error) {
-    console.error('[Notion] Failed to fetch site status:', error)
+  } catch (error: any) {
+    console.error('[Notion] Failed to fetch site status. API Error:', error.message || String(error))
     return SITE_STATUS // Graceful fallback to hardcoded status
   }
 }
