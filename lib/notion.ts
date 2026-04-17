@@ -26,10 +26,9 @@ function isNotionConfigured(): boolean {
   return !isPlaceholder(key) && !isPlaceholder(dbId) && !isPlaceholder(statusId)
 }
 
-const notion = new Client({ auth: process.env.NOTION_API_KEY })
-
-const PROJECTS_DB_ID = process.env.NOTION_PROJECTS_DB_ID ?? ''
-const STATUS_PAGE_ID = process.env.NOTION_STATUS_PAGE_ID ?? ''
+function getNotionClient() {
+  return new Client({ auth: process.env.NOTION_API_KEY })
+}
 
 // ─── Helper: extract plain text from Notion rich-text array ───────────────────
 
@@ -55,9 +54,12 @@ export async function getProjects(): Promise<Project[]> {
     return staticProjects
   }
 
+  const notion = getNotionClient()
+  const dbId = process.env.NOTION_PROJECTS_DB_ID ?? ''
+
   try {
     const response = await notion.dataSources.query({
-      data_source_id: PROJECTS_DB_ID,
+      data_source_id: dbId,
       filter: {
         property: 'visible',
         checkbox: { equals: true },
@@ -67,6 +69,7 @@ export async function getProjects(): Promise<Project[]> {
 
     return response.results.map((page) => {
       // Type assertion — Notion SDK types are very broad
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const props = (page as any).properties
 
       const title: string = richTextToPlain(props.title?.title)
@@ -80,6 +83,7 @@ export async function getProjects(): Promise<Project[]> {
       const isJourney: boolean = props.journey?.checkbox ?? false
 
       return {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         id: (page as any).id,
         name: title,
         description,
@@ -124,15 +128,19 @@ export async function getSiteStatus(): Promise<StatusType> {
     return SITE_STATUS
   }
 
+  const notion = getNotionClient()
+  const statusId = process.env.NOTION_STATUS_PAGE_ID ?? ''
+
   try {
     const response = await notion.dataSources.query({
-      data_source_id: STATUS_PAGE_ID,
+      data_source_id: statusId,
       page_size: 1,
     })
 
     const firstRow = response.results[0]
     if (!firstRow) return SITE_STATUS
 
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const props = (firstRow as any).properties
     const notionValue: string = props.status?.select?.name ?? ''
 
